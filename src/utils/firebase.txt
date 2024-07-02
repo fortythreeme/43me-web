@@ -1,0 +1,25 @@
+// import { initializeApp } from 'firebase/app';
+// import { getMessaging , getToken } from "firebase/messaging";
+
+// //...
+
+// const messaging = getMessaging();
+// // Replace this firebaseConfig object with the congurations for the project you created on your firebase console. 
+// var firebaseConfig = {
+//  //... 
+// };
+// export const requestForToken = async () => {
+//     try {
+//     const currentToken = await getToken(messaging, { vapidKey: 'BAZINr-HZoli3EJZndiUnpyWImGxtnzb5pdWXUUzU8LTvO7uKnzJoB2' });
+//     if (currentToken) {
+//       console.log('current token for client: ', currentToken);
+//     } else {
+//       // Show permission request UI
+//       console.log('No registration token available. Request permission to generate one.');
+//     }
+//   } catch (err) {
+//     console.log('An error occurred while retrieving token. ', err);
+//   }
+//   };
+
+// initializeApp(firebaseConfig);
