@@ -30,6 +30,7 @@ import { useSelector } from 'react-redux';
 const AuthRoute = ({ children }) => {
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Use useSelector directly
+  const isDaysLeft = useSelector((state) => state.user.daysLeft);
   const currentUser = useSelector((state) => state.user.currentUser);
 
   // Default to false if currentUser or is_subscribed is null or undefined
