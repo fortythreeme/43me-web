@@ -409,7 +409,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
             <div className="imgDivCont">
               {files.length > 0 &&
                 files?.map((item1, index) => (
-                  <div className="imgDiv1" >
+                  <div className="imgDiv1" key={index}>
                     <span className="cancel">
                       {' '}
                       <CancelIcon
@@ -543,7 +543,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
           <div className="imgDivCont">
             {files.length > 0 &&
               files?.map((item1, index) => (
-                <div className="imgDiv">
+                <div className="imgDiv" key={index}>
                   <img src={item1.file_url} key={index} className="imgTask"></img>
                 </div>
               ))}
