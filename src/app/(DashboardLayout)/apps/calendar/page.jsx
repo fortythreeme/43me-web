@@ -56,31 +56,31 @@ const BigCalendar = () => {
   
     return dateObject;
   }
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_APP}list`, {
-        headers: {
-          Authorization: `Bearer ${user?.currentUser?.token}`,
-        },
-      });
-
-      // Handle the response data here
-      console.log(response.data.data);
-      const transformedEvents = response.data.data[0].data.map((event) => ({
-        title: event.count ,
-        start: convertDateStringToDateObject(event.date),
-        end:convertDateStringToDateObject(event.date),
-        color: event.countColorBG,
-        id: event.id,
-      }));
-      // console.log(transformedEvents,'ss')
-      setCalEvents(transformedEvents)
-    } catch (error) {
-      // Handle errors
-      console.error("Error fetching data:", error);
-    }
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_APP}list`, {
+          headers: {
+            Authorization: `Bearer ${user?.currentUser?.token}`,
+          },
+        });
+  
+        // Handle the response data here
+        console.log(response.data.data);
+        const transformedEvents = response.data.data[0].data.map((event) => ({
+          title: event.count ,
+          start: convertDateStringToDateObject(event.date),
+          end:convertDateStringToDateObject(event.date),
+          color: event.countColorBG,
+          id: event.id,
+        }));
+        // console.log(transformedEvents,'ss')
+        setCalEvents(transformedEvents)
+      } catch (error) {
+        // Handle errors
+        console.error("Error fetching data:", error);
+      }
+    };
     fetchData();
   }, [])
  
