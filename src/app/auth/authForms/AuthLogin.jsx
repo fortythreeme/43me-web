@@ -56,7 +56,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
     const gRecaptchaToken = await executeRecaptcha('login');
 
-    console.log(gRecaptchaToken,'gRecaptchaTokenlogin')
+    // console.log(gRecaptchaToken,'gRecaptchaTokenlogin')
     try {
       const data = {
         email: email,

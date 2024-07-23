@@ -42,13 +42,15 @@ export const StripePay = async () => {
   //   console.log(error);
   // }
   let data = JSON.stringify({
-    "price": "price_1OrqRfKo9v7E5i0A90apaFyT"
+    // "price": process.env.NEXT_PUBLIC_APP_STRIPE_PRICE
+    "price":"price_1PMRUxSEqRExhJ6zQzB9zCLi",
+    "WEB_URL":"https://app.fortythree.me/"
   });
   
   let config = {
     method: 'post',
     maxBodyLength: Infinity,
-    url: 'https://api.fortythree.me/v1/stripe',
+    url: `${process.env.NEXT_PUBLIC_APP}stripe`,
     headers: { 
       'Content-Type': 'application/json'
     },

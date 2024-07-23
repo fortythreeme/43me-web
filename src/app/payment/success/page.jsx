@@ -10,7 +10,7 @@ const Success = () => {
     const sessionId = urlParams.get('session_id');
     if (sessionId) {
       localStorage.setItem('sessionId',sessionId)
-      // console.log('Checkout Session ID:', sessionId); // Log the Checkout Session ID to the console
+      console.log('Checkout Session ID:', sessionId); // Log the Checkout Session ID to the console
     }
     setTimeout(function() {
       // Close the current tab

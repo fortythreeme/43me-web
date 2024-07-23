@@ -70,7 +70,7 @@ const AuthRegister = ({ title, subtitle, subtext }) => {
     }
 
     const gRecaptchaToken = await executeRecaptcha('register');
-    console.log(gRecaptchaToken,'gRecaptchaTokenregister')
+    // console.log(gRecaptchaToken,'gRecaptchaTokenregister')
 
     try {
       const data = {

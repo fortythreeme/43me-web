@@ -36,7 +36,7 @@ export default function AuthForgotPassword() {
     }
 
     const gRecaptchaToken = await executeRecaptcha('forgotpassword');
-    console.log(gRecaptchaToken,'forgot')
+    // console.log(gRecaptchaToken,'forgot')
     try {
       const data={
         email:email,

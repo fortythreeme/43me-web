@@ -10,7 +10,7 @@
 //       router.replace('/auth/auth1/login');
 //     }
 //   }, [isAuthenticated, router]);
-  
+
 //   if (!isAuthenticated) {
 //     return null; // Prevent rendering children if not authenticated
 //   }
@@ -40,12 +40,14 @@ const AuthRoute = ({ children }) => {
     router.replace('/login');
     return null; // Prevent rendering children if not authenticated
   }
-  if (isAuthenticated && isDaysLeft===0) {
+  if (isAuthenticated && isDaysLeft <= 0) {
+    // console.log("first")
     // const subscribed = useSelector((state) => state.user.currentUser.is_subscribed); // Use useSelector directly
-    if(subscribed===false){
-    router.replace('/login');
-    return null; // Prevent rendering children if not authenticated
-  }}
+    // if (subscribed === false) {
+      router.replace('/login');
+      return null; // Prevent rendering children if not authenticated
+    // }
+  }
   return children;
 };
 

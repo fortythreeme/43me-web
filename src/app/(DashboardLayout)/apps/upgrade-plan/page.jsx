@@ -32,7 +32,7 @@ moment.locale('en-GB');
 const localizer = momentLocalizer(moment);
 import AuthRoute from '../../layout/vertical/sidebar/AuthRoute';
 import { StripePay,StripeStatus,UpdateSubscription  } from '@/utils/apiCalls';
-import { setUser } from '@/store/user/userSlice'; 
+import { setUser,updateDaysLeft } from '@/store/user/userSlice'; 
 import AlertCart from '../../components/apps/ecommerce/productCart/AlertCart';
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -202,6 +202,7 @@ const Subscription = () => {
               days_left:res.data.days_left,
               plan_title:res.data.plan_title
           }));
+          dispatch(updateDaysLeft(res.data.days_left));
           setTextShow(true);
           setText('Subscription Updated Successfully!')
           setTextSev('success')
@@ -213,6 +214,7 @@ const Subscription = () => {
           setTextSev('error')
         }
         setisloading(false);
+        // location.reload()
       console.log(res,'res')
     } catch (err) {
       console.log(err);

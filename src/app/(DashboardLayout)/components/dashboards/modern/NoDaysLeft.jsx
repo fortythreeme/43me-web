@@ -40,6 +40,7 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, TextField } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import AlertCart from '../../apps/ecommerce/productCart/AlertCart';
+import { setUser, updateDaysLeft } from '@/store/user/userSlice';
 const NoDaysLeft = ({ onClose, open }) => {
   const router = useRouter();  
   const dispatch = useDispatch()
@@ -85,11 +86,12 @@ const NoDaysLeft = ({ onClose, open }) => {
               days_left:res.data.days_left,
               plan_title:res.data.plan_title
           }));
+          dispatch(updateDaysLeft(res.data.days_left));
           setTextShow(true);
           setText('Subscription Updated Successfully!')
           setTextSev('success')
           // alert("Subscription Updated Successfully!")
-          onClose()
+          router.push('/')
         }
         if(res.success===false){
           setTextShow(true);

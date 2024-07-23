@@ -23,13 +23,14 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import axios from 'axios';
-import { useRouter , usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import initializeFirebaseMessaging from '@/utils/firebase';
 import { messaging } from '../../public/firebase-messaging-sw';
 import { onMessage } from 'firebase/messaging';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 export const MyApp = ({ children }) => {
   const theme = ThemeSettings();
+  const pathname = usePathname();
   const dispatch = useDispatch();
   const customizer = useSelector((state) => state.customizer);
   const user = useSelector((state) => state.user);
@@ -106,28 +107,31 @@ export const MyApp = ({ children }) => {
     return () => clearInterval(intervalId);
   }, []);
   useEffect(() => {
+    if (!pathname.startsWith('/payment/success') && !pathname.startsWith('/payment/cancel')) {
     const ftc = async () => {
-      const res = await GetUser(user?.currentUser?.token);
-      // console.log(res, 'userinfo');
-      // console.log(res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1])
-      const givenDate = new Date(
-        res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1]?.expiry_date,
-      );
-      const currentDate = new Date();
-      const diffTime = givenDate - currentDate;
-      const differenceInDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
-      // setDaysLeft(differenceInDays);
-      // console.log(differenceInDays,'days')
-      dispatch(updateDaysLeft(differenceInDays));
-      if (
-        givenDate < currentDate &&
-        res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1]?.status === 'inactive'
-      ) {
-        dispatch(logout());
-        router.replace('/login');
-      }
-    };
-    ftc();
+      // console.log(!pathname.startsWith('/payment/success'),'path')
+        const res = await GetUser(user?.currentUser?.token);
+        console.log(res, 'userinfo');
+        // console.log(res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1])
+        const givenDate = new Date(
+          res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1]?.expiry_date,
+        );
+        const currentDate = new Date();
+        const diffTime = givenDate - currentDate;
+        const differenceInDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+        // setDaysLeft(differenceInDays);
+        // console.log(differenceInDays,'days')
+        dispatch(updateDaysLeft(differenceInDays));
+        if (
+          givenDate < currentDate &&
+          res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1]?.status === 'inactive'
+        ) {
+          dispatch(logout());
+          router.replace('/login');
+        }
+      };
+      ftc();
+    }
   }, []);
   return (
     <>
@@ -146,20 +150,21 @@ export const MyApp = ({ children }) => {
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = React.useState(false);
-  const router = useRouter()
-const pathname = usePathname()
-  console.log(pathname,'router')
+  const router = useRouter();
+  const pathname = usePathname();
+  // console.log(pathname, 'router');
   React.useEffect(() => {
     setTimeout(() => setLoading(true), 3000);
   }, []);
-  const isAuthPage = pathname === '/login' || pathname === '/register' || pathname === '/forgot-password';
+  const isAuthPage =
+    pathname === '/login' || pathname === '/register' || pathname === '/forgot-password';
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-          {isAuthPage ? (
+            {isAuthPage ? (
               <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_APP_RECAPTCHA_KEY}>
                 <Notifications />
                 {loading ? (
@@ -179,25 +184,26 @@ const pathname = usePathname()
                 )}
               </GoogleReCaptchaProvider>
             ) : (
-          <>
-            <Notifications />
-            {loading ? (
-              // eslint-disable-next-line react/no-children-prop
-              <MyApp children={children} />
-            ) : (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '100%',
-                  height: '100vh',
-                }}
-              >
-                <CircularProgress />
-              </Box>
+              <>
+                <Notifications />
+                {loading ? (
+                  // eslint-disable-next-line react/no-children-prop
+                  <MyApp children={children} />
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '100vh',
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                )}
+              </>
             )}
-            </> ) }
           </PersistGate>
         </Provider>
       </body>
