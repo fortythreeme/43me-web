@@ -42,9 +42,8 @@ export const StripePay = async () => {
   //   console.log(error);
   // }
   let data = JSON.stringify({
-    // "price": process.env.NEXT_PUBLIC_APP_STRIPE_PRICE
-    "price":"price_1PMRUxSEqRExhJ6zQzB9zCLi",
-    "WEB_URL":"https://app.fortythree.me/"
+    "price": process.env.NEXT_PUBLIC_APP_STRIPE_PRICE,
+    "WEB_URL":process.env.NEXT_PUBLIC_APP_WEB_URL
   });
   
   let config = {
