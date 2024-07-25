@@ -32,6 +32,9 @@ export default function Login () {
             width: '100%',
             opacity: '0.3',
           },
+              '@media (max-width:600px)': {
+                height:0
+              }
         }}
       >
         <Box position="relative">
@@ -47,7 +50,11 @@ export default function Login () {
                 xs: 'none',
                 lg: 'flex',
               },
+              '@media (max-width:600px)': {
+                height:0
+              }
             }}
+            
           >
             <Image
               src={"/images/backgrounds/login-bg.svg"}
@@ -70,8 +77,13 @@ export default function Login () {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        sx={{ 
+          '@media (max-width:600px)': {
+          alignItems:"center",
+          marginTop:"-50%"
+        }}}
       >
-        <Box p={4}>
+        <Box p={4} style={{width:'80%'}}>
           <AuthLogin
             title="Welcome to 43me"
             subtext={

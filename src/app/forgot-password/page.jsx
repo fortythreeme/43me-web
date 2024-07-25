@@ -30,6 +30,10 @@ export default function ForgotPassword() {
             width: '100%',
             opacity: '0.3',
           },
+          '@media (max-width:600px)': {
+              height:0,
+              marginBottom:'14%'
+            },
         }}
       >
         <Box position="relative">
@@ -68,7 +72,7 @@ export default function ForgotPassword() {
         justifyContent="center"
         alignItems="center"
       >
-        <Box p={4}>
+        <Box p={4}  style={{width:'80%'}}>
           <Typography variant="h4" fontWeight="700">
             Forgot your password?
           </Typography>

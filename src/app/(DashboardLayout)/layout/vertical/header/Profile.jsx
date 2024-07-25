@@ -16,8 +16,8 @@ import { logout } from '@/store/user/userSlice';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 const Profile = () => {
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [anchorEl2, setAnchorEl2] = useState(null);
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
@@ -25,14 +25,14 @@ const Profile = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
-  const user = useSelector((state)=> state.user)
+  const user = useSelector((state) => state.user);
 
-const handleLogout = () =>{
-  // console.log('hi')
-  dispatch(logout());
+  const handleLogout = () => {
+    // console.log('hi')
+    dispatch(logout());
     router.replace('/login');
-}
-console.log(user,'update')
+  };
+  console.log(user, 'update');
   return (
     <Box>
       <IconButton
@@ -48,14 +48,30 @@ console.log(user,'update')
         }}
         onClick={handleClick2}
       >
-        <Avatar
-          src={"/images/profile/user-1.jpg"}
-          alt={'ProfileImg'}
-          sx={{
-            width: 35,
-            height: 35,
-          }}
-        />
+        {user?.currentUser  === null ? (
+          <>
+            {' '}
+            <Avatar
+              src={'/images/profile/user-1.jpg'}
+              alt={'ProfileImg'}
+              sx={{
+                width: 35,
+                height: 35,
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Avatar
+              alt={'ProfileImg'}
+              sx={{ bgcolor: `${'primary1.dark'}`, width: 35, height: 35 }}
+              style={{ fontWeight: '900', fontSize: '18px' }}
+            >
+              {user?.currentUser?.user.first_name.charAt(0).toUpperCase()}
+            </Avatar>
+          </>
+        )}
+        <Box></Box>
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}
@@ -77,13 +93,31 @@ console.log(user,'update')
       >
         <Typography variant="h5">User Profile</Typography>
         <Stack direction="row" py={3} spacing={2} alignItems="center">
-        <Avatar src={"/images/profile/user-1.jpg"} alt={"ProfileImg"} sx={{ width: 95, height: 95 }} />
+        {user?.currentUser  === null ? (
+          <>
+          <Avatar src={"/images/profile/user-1.jpg"} alt={"ProfileImg"} sx={{ width: 95, height: 95 }} />
+          
+          </>
+        ) : (
+          <>
+          <Avatar
+            alt={'ProfileImg'}
+            sx={{ bgcolor: `${'primary1.dark'}`, height: 95, width: 95 }}
+            style={{ border: '3px solid #fff', fontWeight: '900', fontSize: '58px' }}
+          >
+            {user?.currentUser?.user.first_name.charAt(0).toUpperCase()}
+          </Avatar></>)}
           <Box>
-            <Typography variant="subtitle2" color="textPrimary" fontWeight={600} style={{textTransform:"capitalize"}}>
-            {user?.currentUser?.user.first_name}
+            <Typography
+              variant="subtitle2"
+              color="textPrimary"
+              fontWeight={600}
+              style={{ textTransform: 'capitalize' }}
+            >
+              {user?.currentUser?.user.first_name}
             </Typography>
             <Typography variant="subtitle2" color="textSecondary">
-            {user?.currentUser?.is_subscribed ? 'Subscription' : "No Subscription"} 
+              {user?.currentUser?.is_subscribed ? 'Subscription' : 'No Subscription'}
             </Typography>
             <Typography
               variant="subtitle2"
@@ -94,18 +128,16 @@ console.log(user,'update')
             >
               {/* <IconMail width={15} height={15} /> */}
               {user?.currentUser !== null && (
-  <>
-    {user?.currentUser.plan ? (
-      <>Current Plan: {user.currentUser.plan.title}</>
-    ) : (
-      <>Current Plan: {user.currentUser.plan_title}</>
-    )}
-  </>
-)}
-
-              <br/>
-              Days Left :             {user?.daysLeft}
-
+                <>
+                  {user?.currentUser.plan ? (
+                    <>Current Plan: {user.currentUser.plan.title}</>
+                  ) : (
+                    <>Current Plan: {user.currentUser.plan_title}</>
+                  )}
+                </>
+              )}
+              <br />
+              Days Left : {user?.daysLeft}
             </Typography>
           </Box>
         </Stack>
@@ -121,7 +153,8 @@ console.log(user,'update')
                     bgcolor="primary1.light"
                     display="flex"
                     alignItems="center"
-                    justifyContent="center" flexShrink="0"
+                    justifyContent="center"
+                    flexShrink="0"
                   >
                     <Avatar
                       src={profile.icon}
@@ -133,7 +166,7 @@ console.log(user,'update')
                       }}
                     />
                   </Box>
-                  <Box className='Center'>
+                  <Box className="Center">
                     <Typography
                       variant="subtitle2"
                       fontWeight={600}
@@ -143,11 +176,9 @@ console.log(user,'update')
                       sx={{
                         width: '240px',
                       }}
-                      
                     >
                       {profile.title}
                     </Typography>
-                    
                   </Box>
                 </Stack>
               </Link>

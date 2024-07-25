@@ -32,6 +32,7 @@ const Logo = () => {
             height={45}
             width={45}
             priority
+            style={{objectFit:'cover'}}
             className='addingIcon'
           />
           {!hideMenu &&<Typography className='forty'>fortythree.me</Typography>}</div>

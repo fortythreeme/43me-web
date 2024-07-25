@@ -164,13 +164,13 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
             }}
           />
         </Box>
-        <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
-          <FormGroup>
+        <Stack justifyContent="flex-end" direction="row" alignItems="center" my={2}>
+          {/* <FormGroup>
             <FormControlLabel
               control={<CustomCheckbox defaultChecked />}
               label="Remember this Device"
             />
-          </FormGroup>
+          </FormGroup> */}
           <Typography
             component={Link}
             href="/forgot-password"
