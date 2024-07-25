@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import { IconMail } from '@tabler/icons-react';
 import { Stack } from '@mui/system';
 import Image from 'next/image';
 import { logout } from '@/store/user/userSlice';
+import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 const Profile = () => {
@@ -33,6 +34,26 @@ const Profile = () => {
     router.replace('/login');
   };
   console.log(user, 'update');
+  const [filteredProfile, setFilteredProfile] = useState([]);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const oneDay = 24 * 60 * 60 * 1000;
+    // const oneMonthLater = currentDate.clone().add(1, 'month').endOf('day');
+    // console.log(oneMonthLater,'oneMonthLater')
+    const filtered = dropdownData?.profile.filter((profile) => {
+      if (profile.title === 'Upgrade Plan' && user?.currentUser?.expiry_date) {
+        const expiryDate = new Date(user?.currentUser?.expiry_date);
+        // console.log(expiryDate >= currentDate && expiryDate - currentDate > 30,'diffference')
+        const differenceInDays =  user?.currentUser?.days_left
+        // console.log(differenceInDays <= 30, 'difference in days');
+        return differenceInDays <= 30;
+      }
+      return true;
+    });
+
+    setFilteredProfile(filtered);
+  }, [dropdownData]);
   return (
     <Box>
       <IconButton
@@ -48,7 +69,7 @@ const Profile = () => {
         }}
         onClick={handleClick2}
       >
-        {user?.currentUser  === null ? (
+        {user?.currentUser === null ? (
           <>
             {' '}
             <Avatar
@@ -93,20 +114,25 @@ const Profile = () => {
       >
         <Typography variant="h5">User Profile</Typography>
         <Stack direction="row" py={3} spacing={2} alignItems="center">
-        {user?.currentUser  === null ? (
-          <>
-          <Avatar src={"/images/profile/user-1.jpg"} alt={"ProfileImg"} sx={{ width: 95, height: 95 }} />
-          
-          </>
-        ) : (
-          <>
-          <Avatar
-            alt={'ProfileImg'}
-            sx={{ bgcolor: `${'primary1.dark'}`, height: 95, width: 95 }}
-            style={{ border: '3px solid #fff', fontWeight: '900', fontSize: '58px' }}
-          >
-            {user?.currentUser?.user.first_name.charAt(0).toUpperCase()}
-          </Avatar></>)}
+          {user?.currentUser === null ? (
+            <>
+              <Avatar
+                src={'/images/profile/user-1.jpg'}
+                alt={'ProfileImg'}
+                sx={{ width: 95, height: 95 }}
+              />
+            </>
+          ) : (
+            <>
+              <Avatar
+                alt={'ProfileImg'}
+                sx={{ bgcolor: `${'primary1.dark'}`, height: 95, width: 95 }}
+                style={{ border: '3px solid #fff', fontWeight: '900', fontSize: '58px' }}
+              >
+                {user?.currentUser?.user.first_name.charAt(0).toUpperCase()}
+              </Avatar>
+            </>
+          )}
           <Box>
             <Typography
               variant="subtitle2"
@@ -142,7 +168,7 @@ const Profile = () => {
           </Box>
         </Stack>
         <Divider />
-        {dropdownData.profile.map((profile) => (
+        {filteredProfile.map((profile) => (
           <Box key={profile.title}>
             <Box sx={{ py: 2, px: 0 }} className="hover-text-primary">
               <Link href={profile.href}>

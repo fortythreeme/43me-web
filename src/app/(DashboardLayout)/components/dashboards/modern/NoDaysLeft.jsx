@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Slider from '@mui/material/Slider';
 
-import { StripePay,UpdateSubscription,StripeStatus } from '@/utils/apiCalls';
+import { StripePay, UpdateSubscription, StripeStatus } from '@/utils/apiCalls';
 import Loading from '@/app/(DashboardLayout)/loading';
 import CircularProgress from '@mui/material/CircularProgress';
 import {
@@ -35,19 +35,19 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { IconChevronDown } from '@tabler/icons-react';
 import { AddNewTask } from '@/utils/apiCalls';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, TextField } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import AlertCart from '../../apps/ecommerce/productCart/AlertCart';
 import { setUser, updateDaysLeft } from '@/store/user/userSlice';
 const NoDaysLeft = ({ onClose, open }) => {
-  const router = useRouter();  
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [isloading, setisloading] = React.useState(false);
-  const [text,setText]= useState('')
-  const [textsev,setTextSev]= useState('')
-  const [textShow,setTextShow]= useState(false) 
+  const [text, setText] = useState('');
+  const [textsev, setTextSev] = useState('');
+  const [textShow, setTextShow] = useState(false);
   const user = useSelector((state) => state.user);
   const [title, setTitle] = useState('');
   const DataImg = new FormData();
@@ -61,7 +61,7 @@ const NoDaysLeft = ({ onClose, open }) => {
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
   };
-  let interval
+  let interval;
   const [sliderValue, setSliderValue] = useState(1);
   const [monthly, setMonthly] = useState(false);
   const handleChange2 = (event) => {
@@ -75,40 +75,42 @@ const NoDaysLeft = ({ onClose, open }) => {
         expiry_date: next_expiry_date,
         plan_identifier: 'me.fortythree.iap.oneyear',
         platform: 'web',
-        receipt:JSON.stringify(status)
+        receipt: JSON.stringify(status),
       };
-      const res = await UpdateSubscription(user.currentUser.token,data)
-      if(res.success){
-           dispatch(setUser({
-              ...user.currentUser,
-              is_subscribed:res.data.is_subscribed,
-              expiry_date:res.data.expiry_date,
-              days_left:res.data.days_left,
-              plan_title:res.data.plan_title
-          }));
-          dispatch(updateDaysLeft(res.data.days_left));
-          setTextShow(true);
-          setText('Subscription Updated Successfully!')
-          setTextSev('success')
-          // alert("Subscription Updated Successfully!")
-          router.push('/')
-        }
-        if(res.success===false){
-          setTextShow(true);
-          setText('Error, Try Again')
-          setTextSev('error')
-          // alert("Error, Try Again")
-        }
-        setisloading(false);
-        // location.reload()
-      console.log(res,'res')
-      console.log(user,"user_info")
+      const res = await UpdateSubscription(user.currentUser.token, data);
+      if (res.success) {
+        dispatch(
+          setUser({
+            ...user.currentUser,
+            is_subscribed: res.data.is_subscribed,
+            expiry_date: res.data.expiry_date,
+            days_left: res.data.days_left,
+            plan_title: res.data.plan_title,
+          }),
+        );
+        dispatch(updateDaysLeft(res.data.days_left));
+        setTextShow(true);
+        setText('Subscription Updated Successfully!');
+        setTextSev('success');
+        // alert("Subscription Updated Successfully!")
+        router.push('/');
+      }
+      if (res.success === false) {
+        setTextShow(true);
+        setText('Error, Try Again');
+        setTextSev('error');
+        // alert("Error, Try Again")
+      }
+      setisloading(false);
+      // location.reload()
+      console.log(res, 'res');
+      console.log(user, 'user_info');
     } catch (err) {
       console.log(err);
       // alert("Error, Try Again")
       setTextShow(true);
-          setText('Error, Try Again')
-          setTextSev('error')
+      setText('Error, Try Again');
+      setTextSev('error');
       setisloading(false);
     }
   };
@@ -124,12 +126,11 @@ const NoDaysLeft = ({ onClose, open }) => {
           if (
             CheckStatus.data.status.payment_status === 'paid' &&
             CheckStatus.data.status.status === 'complete'
-          )
-          {
+          ) {
             console.log(true);
             UpdateSub(CheckStatus.data.status);
           } else {
-          setisloading(false);
+            setisloading(false);
 
             setTextShow(true);
             setText('Transaction Failed!');
@@ -142,8 +143,7 @@ const NoDaysLeft = ({ onClose, open }) => {
           //     days_left:CheckStatus.data.days_left,
           //     plan_title:CheckStatus.data.plan_title
           // }));
-        }
-        else{
+        } else {
           setisloading(false);
           setTextShow(true);
           setText('Transaction Failed!');
@@ -159,7 +159,6 @@ const NoDaysLeft = ({ onClose, open }) => {
     }
   };
   const handleAddTask = async () => {
-
     try {
       const response = await StripePay();
       if (response.data && response.data.data.CheckoutUrl) {
@@ -168,64 +167,63 @@ const NoDaysLeft = ({ onClose, open }) => {
         window.open(response.data.data.CheckoutUrl, '_blank');
         setisloading(true);
         interval = setInterval(CheckStatus, 5000);
-
-    }
-      console.log(response)
+      }
+      console.log(response);
     } catch (err) {
       onClose();
       console.log(err);
-      setisloading(false)
+      setisloading(false);
     }
   };
 
- 
   return (
-    <> 
-    {isloading && (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100vw',
-          position: 'fixed',
-          top: '0',
-          left: '0',
-          height: '100vh',
-          zIndex: '2000',
-          background: '#cccccc57',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    )}
-    <Dialog open={open} onClose={onClose}>
-      <DialogContent>
-        <Typography variant="h2" mb={2} fontWeight={700}>
-          No Days Left 
-        </Typography>
-        <Typography variant='h5'>Your Subscription Plan has ended.
-          <br/>
-          To continue 43me click the Payment Button.</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button
-        
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   dispatch(addNote(id, title, scolor));
-          //   setOpen(false);
-          //   setTitle('');
-          // }}
-          className='payment'
-          color="primary1"
-          onClick={handleAddTask}
+    <>
+      {isloading && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100vw',
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            height: '100vh',
+            zIndex: '2000',
+            background: '#cccccc57',
+          }}
         >
-          Payment
-        </Button>
-      </DialogActions>
-    </Dialog>
-    <AlertCart open={textShow} text={text} sev={textsev}/>
+          <CircularProgress />
+        </Box>
+      )}
+      <Dialog open={open} onClose={onClose}>
+        <DialogContent>
+          <Typography variant="h2" mb={2} fontWeight={700}>
+            No Days Left
+          </Typography>
+          <Typography variant="h5">
+            Your Subscription Plan has ended.
+            <br />
+            To continue 43me click the Payment Button.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   dispatch(addNote(id, title, scolor));
+            //   setOpen(false);
+            //   setTitle('');
+            // }}
+            className="payment"
+            color="primary1"
+            onClick={handleAddTask}
+          >
+            Payment
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <AlertCart open={textShow} text={text} sev={textsev} />
     </>
   );
 };
