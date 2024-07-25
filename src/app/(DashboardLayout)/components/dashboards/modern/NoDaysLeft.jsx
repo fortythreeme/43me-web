@@ -125,8 +125,16 @@ const NoDaysLeft = ({ onClose, open }) => {
             CheckStatus.data.status.payment_status === 'paid' &&
             CheckStatus.data.status.status === 'complete'
           )
+          {
             console.log(true);
-            UpdateSub(CheckStatus.data.status)
+            UpdateSub(CheckStatus.data.status);
+          } else {
+          setisloading(false);
+
+            setTextShow(true);
+            setText('Transaction Failed!');
+            setTextSev('error');
+          }
           //   dispatch(setUser({
           //     ...user.currentUser,
           //     is_subscribed:CheckStatus.data.is_subscribed,
@@ -136,9 +144,16 @@ const NoDaysLeft = ({ onClose, open }) => {
           // }));
         }
         else{
-          alert('Transaction Failed!')
+          setisloading(false);
+          setTextShow(true);
+          setText('Transaction Failed!');
+          setTextSev('error');
         }
       } catch (error) {
+        setisloading(false);
+        setTextShow(true);
+        setText('Transaction Failed!');
+        setTextSev('error');
         console.error('Error fetching Stripe status:', error);
       }
     }
