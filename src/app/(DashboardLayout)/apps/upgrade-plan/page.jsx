@@ -35,6 +35,27 @@ import { StripePay, StripeStatus, UpdateSubscription } from '@/utils/apiCalls';
 import { setUser, updateDaysLeft } from '@/store/user/userSlice';
 import AlertCart from '../../components/apps/ecommerce/productCart/AlertCart';
 const Subscription = () => {
+  const [dimensions, setDimensions] = useState({ width: 250, height: 250 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 600) {
+        setDimensions({ width: 120, height: 120 });
+      } else {
+        setDimensions({ width: 250, height: 250 });
+      }
+    };
+
+    // Set initial dimensions based on the current window size
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const dispatch = useDispatch();
   let interval;
   const [text, setText] = useState('');
@@ -239,12 +260,11 @@ const Subscription = () => {
           if (
             CheckStatus.data.status.payment_status === 'paid' &&
             CheckStatus.data.status.status === 'complete'
-          ) 
-          {
+          ) {
             console.log(true);
             UpdateSub(CheckStatus.data.status);
           } else {
-          setisloading(false);
+            setisloading(false);
 
             setTextShow(true);
             setText('Transaction Failed!');
@@ -298,58 +318,139 @@ const Subscription = () => {
               <Typography className="heading" fontWeight={800}>
                 Get 43Me now & stay organised{' '}
               </Typography>
-              <Typography color={'.main'} mt={1} variant="subtitle1" fontWeight={600} width="50%">
+              <Typography
+                color={'.main'}
+                mt={1}
+                variant="subtitle1"
+                fontWeight={600}
+                sx={{
+                  width: '50%',
+                  // maxWidth: "500px",  maxHeight: '500px',
+                  '@media (max-width:600px)': {
+                    width: '90%',
+                    marginBottom: "25px",
+                  },
+                }}
+              >
                 Full access : Get Access to your tickler file. Create And Manage unlimited tasks.
                 Access from multiple devices
               </Typography>
-              <BlankCard>
-                <CardContent>
-                  <Box className="cardRocket">
-                    <Box>
-                      <Image
-                        src={'/images/rocket.png'}
-                        alt="bg"
-                        width={250}
-                        height={250}
-                        style={{
-                          width: '100%',
-                          // maxWidth: "500px",  maxHeight: '500px',
-                        }}
-                      />
+              <BlankCard
+                sx={{
+                  // maxWidth: "500px",  maxHeight: '500px',
+                  '@media (max-width:600px)': {
+                    height: '30%',
+                  },
+                }}
+              >
+                {dimensions?.width === 250 ? (
+                  <CardContent>
+                    <Box className="cardRocket">
+                      <Box>
+                        <Image
+                          src={'/images/rocket.png'}
+                          alt="bg"
+                          width={dimensions.width}
+                          height={dimensions.height}
+                          // sx={{
+                          //   // width: '100%',
+                          //   // maxWidth: "500px",  maxHeight: '500px',
+                          //   '@media (max-width:600px)': {
+                          //     height: '120px',
+                          //   },
+                          // }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontWeight={600}
+                          fontSize={'18px'}
+                        >
+                          Full Access
+                        </Typography>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontSize={'18px'}
+                          fontWeight={600}
+                        >
+                          One Year Subscription
+                        </Typography>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontSize={'18px'}
+                          fontWeight={600}
+                        >
+                          $24.99
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <Button className="subscribe" onClick={handleSubscribe}>
+                          Subscribe
+                        </Button>
+                      </Box>
                     </Box>
-                    <Box>
-                      <Typography
-                        color={'.main'}
-                        variant="subtitle1"
-                        fontWeight={600}
-                        fontSize={'18px'}
-                      >
-                        Full Access
-                      </Typography>
-                      <Typography
-                        color={'.main'}
-                        variant="subtitle1"
-                        fontSize={'18px'}
-                        fontWeight={600}
-                      >
-                        One Year Subscription
-                      </Typography>
-                      <Typography
-                        color={'.main'}
-                        variant="subtitle1"
-                        fontSize={'18px'}
-                        fontWeight={600}
-                      >
-                        $24.99
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Button className="subscribe" onClick={handleSubscribe}>
-                        Subscribe
-                      </Button>
-                    </Box>
-                  </Box>
-                </CardContent>
+                  </CardContent>
+                ) : (
+                  <CardContent>
+                    <Box className="cardRocket">
+                      <Box>
+                        <Image
+                          src={'/images/rocket.png'}
+                          alt="bg"
+                          width={dimensions.width}
+                          height={dimensions.height}
+                          // sx={{
+                          //   // width: '100%',
+                          //   // maxWidth: "500px",  maxHeight: '500px',
+                          //   '@media (max-width:600px)': {
+                          //     height: '120px',
+                          //   },
+                          // }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontWeight={600}
+                          fontSize={'18px'}
+                        >
+                          Full Access
+                        </Typography>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontSize={'18px'}
+                          fontWeight={600}
+                        >
+                          One Year Subscription
+                        </Typography>
+                        <Typography
+                          color={'.main'}
+                          variant="subtitle1"
+                          fontSize={'18px'}
+                          fontWeight={600}
+                        >
+                          $24.99
+                        </Typography>
+                      </Box>
+                    </Box >
+                      <Box sx={{
+                  // maxWidth: "500px",  maxHeight: '500px',
+                  '@media (max-width:600px)': {
+                    margin: '15px auto',
+                  },
+                }}>
+                        <Button className="subscribe" onClick={handleSubscribe}>
+                          Subscribe
+                        </Button>
+                      </Box>
+                  </CardContent>
+                )}
               </BlankCard>
               {/* <BlankCard>
        

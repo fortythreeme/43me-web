@@ -517,7 +517,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={handleClose}>Share</MenuItem>
+          {/* <MenuItem onClick={handleClose}>Share</MenuItem> */}
           <MenuItem onClick={() => setDelet(true)}>Delete</MenuItem>
           {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
         </Menu>

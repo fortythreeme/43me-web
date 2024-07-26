@@ -757,3 +757,30 @@ max-height: 85vh;
   .addtaging{
     width: 100%;
   }
+  @media only screen and (max-width: 600px) {
+    .flexi{
+        flex-direction: column;
+    }
+    .width50{
+        width: 100%;
+    }
+    .boxBorder{
+        min-height: 60vh;
+        height: 60vh;
+    }
+    .flexedDiv{
+        margin: 10px 3px;
+        width: 100%;
+    }
+    .maxWidth{
+        width: 10vw !important;
+    }
+    .boxSize{
+        padding: 7px;
+    }
+    .subscribe{
+        width: 100%;
+        margin: 15px auto;
+        padding: 10px;
+    }
+  }
