@@ -183,8 +183,9 @@ const Subscription = () => {
     setEnd(newValue);
   };
   const UpdateSub = async (status) => {
-    const dat = moment(new Date());
+    const dat = moment(new Date(user?.currentUser?.expiry_date));
     const next_expiry_date = dat.add(1, 'years').format('YYYY-MM-DD');
+    // console.log(dat,'expiry_date')
     try {
       const data = {
         expiry_date: next_expiry_date,

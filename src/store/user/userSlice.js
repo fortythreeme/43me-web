@@ -49,9 +49,11 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
 
     }, 
-    updateDaysLeft: (state, action) => {
+   updateDaysLeft : (state, action) => {
       state.daysLeft = action.payload;
-      state.currentUser.days_left = action.payload;
+      if (state.currentUser) {
+        state.currentUser.days_left = action.payload;
+      }
     },   logout: (state) => {
       state.currentUser = null;
       state.isAuthenticated = false;
