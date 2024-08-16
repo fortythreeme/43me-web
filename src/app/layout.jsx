@@ -74,6 +74,7 @@ export const MyApp = ({ children }) => {
     const evening = localStorage.getItem('eveRemind');
     const intervalId = setInterval(() => {
       const currentTime = new Date();
+      // console.log(targetTime1,"evening")
       if (
         morning &&
         currentTime.getHours() === targetTime2.getHours() &&
