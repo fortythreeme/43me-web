@@ -23,7 +23,7 @@ const secdrawerWidth = 320;
 import AuthRoute from '../../layout/vertical/sidebar/AuthRoute';
 const Tasks = () => {
   const user = useSelector((state) => state.user);
-  console.log(user,'userinfo')
+  // console.log(user,'userinfo')
   const [list, setList] = useState()
   const [isLeftSidebarOpen, setLeftSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setRightSidebarOpen] = useState(false);

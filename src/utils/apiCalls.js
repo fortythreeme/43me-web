@@ -160,7 +160,7 @@ export const EditTask = async (authToken, id, data) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response, 'editTask');
+    // console.log(response, 'editTask');
     return response;
   } catch (error) {
     console.log(error);
@@ -174,7 +174,7 @@ export const MoveTask = async (authToken, id, data) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'moveTask');
+    // console.log(response, 'moveTask');
     return response;
   } catch (error) {
     console.log(error);
@@ -185,7 +185,7 @@ export const ResendCode = async (data) => {
     // console.log(authToken,data,'data')
     const response = await axios.post(`${process.env.NEXT_PUBLIC_APP}auth/resend_token`, data, {
     });
-    console.log(response, 'ResendCode');
+    // console.log(response, 'ResendCode');
     return response;
   } catch (error) {
     console.log(error);
@@ -196,7 +196,7 @@ export const ForgotPassWord = async (data) => {
     // console.log(authToken,data,'data')
     const response = await axios.post(`${process.env.NEXT_PUBLIC_APP}auth/forgot-password`, data, {
     });
-    console.log(response, 'ForgotCode');
+    // console.log(response, 'ForgotCode');
     return response;
   } catch (error) {
     console.log(error);
@@ -207,7 +207,7 @@ export const ActiveAccount = async (data) => {
     // console.log(authToken,data,'data')
     const response = await axios.post(`${process.env.NEXT_PUBLIC_APP}auth/activation`, data, {
     });
-    console.log(response, 'Activation');
+    // console.log(response, 'Activation');
     return response;
   } catch (error) {
     console.log(error);
@@ -221,7 +221,7 @@ export const Update = async (authToken,data) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'UpdateProfile');
+    // console.log(response, 'UpdateProfile');
     return response;
   } catch (error) {
     console.log(error);
@@ -235,7 +235,7 @@ export const GetUser = async (authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'GetProfile');
+    // console.log(response, 'GetProfile');
     return response.data;
   } catch (error) {
     console.log(error);
@@ -249,7 +249,7 @@ export const UpdatePassword = async (authToken,data) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'UpdatePassword');
+    // console.log(response, 'UpdatePassword');
     return response;
   } catch (error) {
     console.log(error);
@@ -275,7 +275,7 @@ export const RemoveTask = async (authToken, task) => {
       data: data
     };
     const response = await axios.request(config);
-    console.log(response.data); // Log the response data
+    // console.log(response.data); // Log the response data
     return response.data;
   } catch (error) {
     console.log(error);
@@ -289,7 +289,7 @@ export const MarkAsDone = async (authToken, id, data) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'MarkAsDone');
+    // console.log(response, 'MarkAsDone');
     return response;
   } catch (error) {
     console.log(error);
@@ -303,7 +303,7 @@ export const AddNewTask = async (authToken, data) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    console.log(response, 'AddTask');
+    // console.log(response, 'AddTask');
     return response;
   } catch (error) {
     console.log(error);

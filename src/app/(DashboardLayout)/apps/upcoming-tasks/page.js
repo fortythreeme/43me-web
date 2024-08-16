@@ -25,7 +25,7 @@ import AuthRoute from '../../layout/vertical/sidebar/AuthRoute';
 import ViewTaskAll from '../../layout/vertical/sidebar/ViewTaskAll';
 const Upcoming = () => {
   const user = useSelector((state) => state.user);
-  console.log(user, 'userinfo');
+  // console.log(user, 'userinfo');
   const [list, setList] = useState();
   const [isLeftSidebarOpen, setLeftSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setRightSidebarOpen] = useState(false);

@@ -47,7 +47,7 @@ const initializeFirebaseMessaging = async () => {
       getToken(messaging, {
         vapidKey:
           // "BAZINr-HZoli3EJZndiUnpyWImGxtnzb5pdWXUUzU8LTvO7uKnzJoB2A_lERTRH7FQHgE9MjgEXp7zEAxhwUA3M"
-          'BC1VGs8EEbFZykqmlhJSvdoJhRyhqyKcQ1-H_--OM2FaqzZhuonBiwrLpqqxtiwkI01dPTEecMoYEsxsoDo-WDg',
+         process.env.FIREBASE,
       })
         .then((currentToken) => {
           if (currentToken) {

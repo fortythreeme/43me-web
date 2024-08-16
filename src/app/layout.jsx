@@ -83,7 +83,7 @@ export const MyApp = ({ children }) => {
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
       }
-      if (
+      else if (
         midday &&
         currentTime.getHours() === targetTime.getHours() &&
         currentTime.getMinutes() === targetTime.getMinutes()
@@ -92,11 +92,13 @@ export const MyApp = ({ children }) => {
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
       }
-      if (
+      else if
+      (
         evening &&
         currentTime.getHours() === targetTime1.getHours() &&
         currentTime.getMinutes() === targetTime1.getMinutes()
-      ) {
+      )
+       {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
@@ -111,7 +113,7 @@ export const MyApp = ({ children }) => {
     const ftc = async () => {
       // console.log(!pathname.startsWith('/payment/success'),'path')
         const res = await GetUser(user?.currentUser?.token);
-        console.log(res, 'userinfo');
+        // console.log(res, 'userinfo');
         // console.log(res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1])
         const givenDate = new Date(
           res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1]?.expiry_date,
