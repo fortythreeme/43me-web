@@ -74,7 +74,7 @@ const NoDaysLeft = ({ onClose, open }) => {
       const data = {
         expiry_date: next_expiry_date,
         plan_identifier: 'me.fortythree.iap.oneyear',
-        platform: 'web',
+        platform: 'stripe',
         receipt: JSON.stringify(status),
       };
       const res = await UpdateSubscription(user.currentUser.token, data);
