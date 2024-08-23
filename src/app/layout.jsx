@@ -66,19 +66,25 @@ export const MyApp = ({ children }) => {
   }, []);
   useEffect(() => {
     const tokenFirebase = localStorage.getItem('CurrentToken');
-    const targetTime = new Date(localStorage.getItem('mid')); // Define the target time
-    const targetTime1 = new Date(localStorage.getItem('eve')); // Define the target time
-    const targetTime2 = new Date(localStorage.getItem('mor')); // Define the target time
+    const targetTime = new Date(localStorage.getItem('mid')).getTime(); 
+    const targetTime1 = new Date(localStorage.getItem('eve')).getTime(); 
+    const targetTime2 = new Date(localStorage.getItem('mor')).getTime(); 
     const morning = localStorage.getItem('morRemind');
     const midday = localStorage.getItem('midRemind');
     const evening = localStorage.getItem('eveRemind');
+    console.log(targetTime1,'target')
     const intervalId = setInterval(() => {
       const currentTime = new Date();
+      const currentHoursMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+
+    const targetHoursMinutes = new Date(targetTime).getHours() * 60 + new Date(targetTime).getMinutes();
+    const targetHoursMinutes1 = new Date(targetTime1).getHours() * 60 + new Date(targetTime1).getMinutes();
+    const targetHoursMinutes2 = new Date(targetTime2).getHours() * 60 + new Date(targetTime2).getMinutes();
       // console.log(targetTime1,"evening")
+      console.log(targetHoursMinutes,currentHoursMinutes,'hours')
       if (
         morning &&
-        currentTime.getHours() === targetTime2.getHours() &&
-        currentTime.getMinutes() === targetTime2.getMinutes()
+        currentHoursMinutes === targetHoursMinutes2
       ) {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
@@ -86,8 +92,7 @@ export const MyApp = ({ children }) => {
       }
       else if (
         midday &&
-        currentTime.getHours() === targetTime.getHours() &&
-        currentTime.getMinutes() === targetTime.getMinutes()
+        currentHoursMinutes === targetHoursMinutes
       ) {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
@@ -96,8 +101,7 @@ export const MyApp = ({ children }) => {
       else if
       (
         evening &&
-        currentTime.getHours() === targetTime1.getHours() &&
-        currentTime.getMinutes() === targetTime1.getMinutes()
+        currentHoursMinutes === targetHoursMinutes1
       )
        {
         // console.log("first")
