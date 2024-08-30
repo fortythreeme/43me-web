@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateDaysLeft } from '@/store/user/userSlice';
 import { logout } from '@/store/user/userSlice';
 import { Provider } from 'react-redux';
+import Script from 'next/script';
 import './global.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -66,44 +67,34 @@ export const MyApp = ({ children }) => {
   }, []);
   useEffect(() => {
     const tokenFirebase = localStorage.getItem('CurrentToken');
-    const targetTime = new Date(localStorage.getItem('mid')).getTime(); 
-    const targetTime1 = new Date(localStorage.getItem('eve')).getTime(); 
-    const targetTime2 = new Date(localStorage.getItem('mor')).getTime(); 
+    const targetTime = new Date(localStorage.getItem('mid')).getTime();
+    const targetTime1 = new Date(localStorage.getItem('eve')).getTime();
+    const targetTime2 = new Date(localStorage.getItem('mor')).getTime();
     const morning = localStorage.getItem('morRemind');
     const midday = localStorage.getItem('midRemind');
     const evening = localStorage.getItem('eveRemind');
-    console.log(targetTime1,'target')
+    console.log(targetTime1, 'target');
     const intervalId = setInterval(() => {
       const currentTime = new Date();
       const currentHoursMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
 
-    const targetHoursMinutes = new Date(targetTime).getHours() * 60 + new Date(targetTime).getMinutes();
-    const targetHoursMinutes1 = new Date(targetTime1).getHours() * 60 + new Date(targetTime1).getMinutes();
-    const targetHoursMinutes2 = new Date(targetTime2).getHours() * 60 + new Date(targetTime2).getMinutes();
+      const targetHoursMinutes =
+        new Date(targetTime).getHours() * 60 + new Date(targetTime).getMinutes();
+      const targetHoursMinutes1 =
+        new Date(targetTime1).getHours() * 60 + new Date(targetTime1).getMinutes();
+      const targetHoursMinutes2 =
+        new Date(targetTime2).getHours() * 60 + new Date(targetTime2).getMinutes();
       // console.log(targetTime1,"evening")
-      console.log(targetHoursMinutes,currentHoursMinutes,'hours')
-      if (
-        morning &&
-        currentHoursMinutes === targetHoursMinutes2
-      ) {
+      console.log(targetHoursMinutes, currentHoursMinutes, 'hours');
+      if (morning && currentHoursMinutes === targetHoursMinutes2) {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
-      }
-      else if (
-        midday &&
-        currentHoursMinutes === targetHoursMinutes
-      ) {
+      } else if (midday && currentHoursMinutes === targetHoursMinutes) {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
-      }
-      else if
-      (
-        evening &&
-        currentHoursMinutes === targetHoursMinutes1
-      )
-       {
+      } else if (evening && currentHoursMinutes === targetHoursMinutes1) {
         // console.log("first")
         const res = SendNotify(tokenFirebase, '43me', 'Lets Check What to do today!');
         //  console.log(res,'res-data')
@@ -115,8 +106,8 @@ export const MyApp = ({ children }) => {
   }, []);
   useEffect(() => {
     if (!pathname.startsWith('/payment/success') && !pathname.startsWith('/payment/cancel')) {
-    const ftc = async () => {
-      // console.log(!pathname.startsWith('/payment/success'),'path')
+      const ftc = async () => {
+        // console.log(!pathname.startsWith('/payment/success'),'path')
         const res = await GetUser(user?.currentUser?.token);
         // console.log(res, 'userinfo');
         // console.log(res?.data[0].subscriptions[res?.data[0].subscriptions.length - 1])
@@ -168,6 +159,17 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* <!-- Google tag (gtag.js) -->  */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QZCSD8EVYW"></Script>{' '}
+        <Script id="google-analytics">
+          {' '}
+          {`window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);} 
+           gtag('js', new Date()); 
+           gtag('config', 'G-QZCSD8EVYW'); `}
+        </Script>
+      </head>
       <body>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

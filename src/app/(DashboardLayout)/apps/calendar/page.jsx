@@ -82,7 +82,7 @@ const BigCalendar = () => {
   };
   useEffect(() => {
     fetchData();
-  }, [fetchData])
+  }, [])
  
   const ColorVariation = [
     {
