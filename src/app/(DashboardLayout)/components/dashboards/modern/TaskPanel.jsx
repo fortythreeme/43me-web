@@ -77,7 +77,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
     setAnchorEl(null);
   };
   const uniqueTags = item?.tags.reduce((acc, tagItem) => {
-    if (!acc.some(existingItem => existingItem.tag === tagItem.tag)) {
+    if (!acc.some((existingItem) => existingItem.tag === tagItem.tag)) {
       acc.push(tagItem);
     }
     return acc;
@@ -99,11 +99,12 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
         dataImg.append('deleted_images[]', item._id);
       });
     }
-    if(item.is_month===true){
-      dataImg.append("date",item.month);
+    if (item.is_month === true) {
+      dataImg.append('date', item.month);
     }
-    if(item.is_month===false){
-    dataImg.append('date', item.date);}
+    if (item.is_month === false) {
+      dataImg.append('date', item.date);
+    }
     dataImg.append('description', desc);
     const tag = tags1.join(',');
     if (tag) {
@@ -328,7 +329,17 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
   // console.log(delfiles,'new1')
   const handleImageClick = (image) => {
     setSelectedImage(image);
-    setOpenImage(true)
+    setOpenImage(true);
+  };
+  const formatItemDate = (date) => {
+    let formattedDate = date;
+    let format = localStorage.getItem('format');
+  
+    if (format && format !== 'DD/MM') {
+      formattedDate = moment(date, 'DD/MM').format(format);
+    }
+  
+    return formattedDate;
   };
   return (
     <div className="viewTaskTab" key={item._id}>
@@ -377,7 +388,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
           />
           <div className="end">
             {tags1.length > 0 &&
-              tags1?.slice(0,10).map((item1, index) => (
+              tags1?.slice(0, 10).map((item1, index) => (
                 <Chip
                   key={index} // Remember to include a unique key when mapping over elements in React
                   //   color="primary"
@@ -419,15 +430,17 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
                         }}
                       />{' '}
                     </span>
-                    <img src={item1.file_url} key={index} className="imgTask" onClick={() => handleImageClick(item1.file_url)}></img>
+                    <img
+                      src={item1.file_url}
+                      key={index}
+                      className="imgTask"
+                      onClick={() => handleImageClick(item1.file_url)}
+                    ></img>
                   </div>
                 ))}
 
               {newlyUploadedImages.map((file, index) => (
-                <div
-                  key={index}
-                  className="imgDiv1"
-                >
+                <div key={index} className="imgDiv1">
                   <span className="cancel">
                     <CancelIcon
                       className="iconColor"
@@ -475,14 +488,19 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
           </Typography>
           <div className="checkBoxArea">
             <Box>
-              {list?.data[0]?.data.map((item) => (
-                <CheckBox
-                  item={item}
-                  key={item.id}
-                  checked={selectedItemId.id === item.id}
-                  handleChange={() => handleCheckBoxChange(item.id)}
-                />
-              ))}
+              {list?.data[0]?.data.slice(1).map((item) => {
+                const formattedDate = formatItemDate(item?.date);
+                console.log(item, 'item');
+  
+                return (
+                  <CheckBox
+                    item={{ ...item, date: formattedDate }} // Pass the item as is, or use {...item, date: formattedDate} if formattedDate is needed
+                    key={item.id}
+                    checked={selectedItemId.id === item.id}
+                    handleChange={() => handleCheckBoxChange(item.id)}
+                  />
+                );
+              })}
               {list?.data[1]?.data.map((item) => (
                 <CheckBox
                   item={item}
@@ -537,8 +555,7 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
                   label={item1?.tag ? t(`${item1.tag}`) : ''} // Check if item.tag is defined before accessing it
                   className="chipCssTag"
                 />
-              ))
-              }
+              ))}
           </div>
           <div className="imgDivCont">
             {files.length > 0 &&
@@ -550,7 +567,9 @@ const TaskPanel = ({ item, editing, onTaskEdit, onTaskMove }) => {
           </div>
         </Box>
       )}
-      {selectedImage && <ImageView open={openImage} onClose={handleCloseImage} item={selectedImage}/>}
+      {selectedImage && (
+        <ImageView open={openImage} onClose={handleCloseImage} item={selectedImage} />
+      )}
       {/* <Box className={edit ? "textViewEdit" : "textView"}  contentEditable={edit} onChange={handleDescriptionChange}><Typography>{desc}</Typography></Box> */}
     </div>
   );
