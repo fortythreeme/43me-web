@@ -26,6 +26,7 @@
     "apexcharts": "3.43.0",
     "axios": "^1.6.5",
     "axios-mock-adapter": "^1.22.0",
+    "braces": "^3.0.3",
     "chance": "^1.1.11",
     "date-fns": "^2.30.0",
     "emoji-picker-react": "^4.5.2",
