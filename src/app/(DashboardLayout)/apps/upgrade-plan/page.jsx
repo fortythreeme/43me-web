@@ -70,6 +70,7 @@ const Subscription = () => {
   const [start, setStart] = React.useState();
   const router = useRouter();
   const [end, setEnd] = React.useState();
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [color, setColor] = React.useState('default');
   const [events, setEvents] = useState();
   const [update, setUpdate] = React.useState();
@@ -203,6 +204,7 @@ const Subscription = () => {
   const handleEndChange = (newValue) => {
     setEnd(newValue);
   };
+  // let Payment = false;
   const UpdateSub = async (status) => {
     const dat = moment(new Date(user?.currentUser?.expiry_date));
     const next_expiry_date = dat.add(1, 'years').format('YYYY-MM-DD');
@@ -226,15 +228,16 @@ const Subscription = () => {
           }),
         );
         dispatch(updateDaysLeft(res.data.days_left));
-        setTextShow(true);
-        setText('Subscription Updated Successfully!');
-        setTextSev('success');
+        // setTextShow(true);
+        // Payment = true;
+        triggerAlert('Subscription Updated Successfully!', 'success');
+        // setTextSev('success');
       }
       if (res.success === false) {
         // alert("Error, Try Again")
-        setTextShow(true);
-        setText('Error, Try Again');
-        setTextSev('error');
+        // setTextShow(true);
+        triggerAlert('Error, Try Again', 'error');
+        // setTextSev('error');
       }
       setisloading(false);
       // location.reload()
@@ -242,9 +245,9 @@ const Subscription = () => {
     } catch (err) {
       console.log(err);
       // alert("Error, Try Again")
-      setTextShow(true);
-      setText('Error, Try Again');
-      setTextSev('error');
+      // setTextShow(true);
+      triggerAlert('Error, Try Again', 'error');
+      // setTextSev('error');
       setisloading(false);
     }
   };
@@ -266,9 +269,9 @@ const Subscription = () => {
           } else {
             setisloading(false);
 
-            setTextShow(true);
-            setText('Transaction Failed!');
-            setTextSev('error');
+            // setTextShow(true);
+            triggerAlert('Transaction Failed!', 'error');
+            // setTextSev('error');
           }
           //   dispatch(setUser({
           //     ...user.currentUser,
@@ -280,14 +283,14 @@ const Subscription = () => {
         } else {
           // alert('Transaction Failed!')
           setisloading(false);
-          setTextShow(true);
-          setText('Transaction Failed!');
-          setTextSev('error');
+          // setTextShow(true);
+          triggerAlert('Transaction Failed!', 'error');
+          // setTextSev('error');
         }
       } catch (error) {
-        setTextShow(true);
-        setText('Transaction Failed!');
-        setTextSev('error');
+        // setTextShow(true);
+        triggerAlert('Transaction Failed!', 'error');
+        // setTextSev('error');
         console.error('Error fetching Stripe status:', error);
       }
     }
@@ -298,15 +301,41 @@ const Subscription = () => {
       if (response.data && response.data.data.CheckoutUrl) {
         // Open the CheckoutUrl in a new tab
         localStorage.removeItem('sessionId');
-        window.open(response.data.data.CheckoutUrl, '_blank');
+        const paymentWindow = window.open(response.data.data.CheckoutUrl, '_blank');
         setisloading(true);
         interval = setInterval(CheckStatus, 5000);
+
+        const windowCheckInterval = setInterval(() => {
+          if (paymentWindow && paymentWindow.closed) {
+            clearInterval(windowCheckInterval);
+            clearInterval(interval);
+            setisloading(false);
+            // Only show the "Transaction Cancelled" alert if payment wasn't completed
+            // setTimeout(() => {
+            //   if (!Payment) {
+            //     // Only show the "Transaction Cancelled" alert if payment wasn't completed
+            //     triggerAlert('Transaction Cancelled! Try Again.', 'error');
+            //   }
+            // }, 2000); // 2-second delay to ensure state updates
+          }
+        }, 500);
       }
       console.log(response);
     } catch (err) {
       console.log(err);
       setisloading(false);
     }
+  };
+
+  const triggerAlert = (message, severity) => {
+    setText(message);
+    setTextSev(severity);
+    setTextShow(true);
+
+    // Automatically close the alert after 6 seconds
+    setTimeout(() => {
+      setTextShow(false);
+    }, 6000);
   };
   return (
     <AuthRoute>
@@ -328,7 +357,7 @@ const Subscription = () => {
                   // maxWidth: "500px",  maxHeight: '500px',
                   '@media (max-width:600px)': {
                     width: '90%',
-                    marginBottom: "25px",
+                    marginBottom: '25px',
                   },
                 }}
               >
@@ -438,17 +467,19 @@ const Subscription = () => {
                           $24.99
                         </Typography>
                       </Box>
-                    </Box >
-                      <Box sx={{
-                  // maxWidth: "500px",  maxHeight: '500px',
-                  '@media (max-width:600px)': {
-                    margin: '15px auto',
-                  },
-                }}>
-                        <Button className="subscribe" onClick={handleSubscribe}>
-                          Subscribe
-                        </Button>
-                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        // maxWidth: "500px",  maxHeight: '500px',
+                        '@media (max-width:600px)': {
+                          margin: '15px auto',
+                        },
+                      }}
+                    >
+                      <Button className="subscribe" onClick={handleSubscribe}>
+                        Subscribe
+                      </Button>
+                    </Box>
                   </CardContent>
                 )}
               </BlankCard>

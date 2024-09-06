@@ -89,16 +89,16 @@ const NoDaysLeft = ({ onClose, open }) => {
           }),
         );
         dispatch(updateDaysLeft(res.data.days_left));
-        setTextShow(true);
-        setText('Subscription Updated Successfully!');
-        setTextSev('success');
+        // setTextShow(true);
+        triggerAlert('Subscription Updated Successfully!','success');
+        // setTextSev('success');
         // alert("Subscription Updated Successfully!")
         router.push('/');
       }
       if (res.success === false) {
-        setTextShow(true);
-        setText('Error, Try Again');
-        setTextSev('error');
+        // setTextShow(true);
+        triggerAlert('Error, Try Again','error');
+        // setTextSev('error');
         // alert("Error, Try Again")
       }
       setisloading(false);
@@ -108,9 +108,9 @@ const NoDaysLeft = ({ onClose, open }) => {
     } catch (err) {
       console.log(err);
       // alert("Error, Try Again")
-      setTextShow(true);
-      setText('Error, Try Again');
-      setTextSev('error');
+      // setTextShow(true);
+      triggerAlert('Error, Try Again','error');
+      // setTextSev('error');
       setisloading(false);
     }
   };
@@ -130,11 +130,11 @@ const NoDaysLeft = ({ onClose, open }) => {
             console.log(true);
             UpdateSub(CheckStatus.data.status);
           } else {
+            // setTextShow(true);
+            triggerAlert('Transaction Failed!','error');
+            // setTextSev('error');
             setisloading(false);
 
-            setTextShow(true);
-            setText('Transaction Failed!');
-            setTextSev('error');
           }
           //   dispatch(setUser({
           //     ...user.currentUser,
@@ -145,18 +145,28 @@ const NoDaysLeft = ({ onClose, open }) => {
           // }));
         } else {
           setisloading(false);
-          setTextShow(true);
-          setText('Transaction Failed!');
-          setTextSev('error');
+          // setTextShow(true);
+          triggerAlert('Transaction Failed!','error');
+          // setTextSev('error');
         }
       } catch (error) {
         setisloading(false);
-        setTextShow(true);
-        setText('Transaction Failed!');
-        setTextSev('error');
+        // setTextShow(true);
+        triggerAlert('Transaction Failed!','error');
+        // setTextSev('error');
         console.error('Error fetching Stripe status:', error);
       }
     }
+  };
+  const triggerAlert = (message, severity) => {
+    setText(message);
+    setTextSev(severity);
+    setTextShow(true);
+
+    // Automatically close the alert after 6 seconds
+    setTimeout(() => {
+      setTextShow(false);
+    }, 6000);
   };
   const handleAddTask = async () => {
     try {
@@ -164,11 +174,24 @@ const NoDaysLeft = ({ onClose, open }) => {
       if (response.data && response.data.data.CheckoutUrl) {
         // Open the CheckoutUrl in a new tab
         localStorage.removeItem('sessionId');
-        window.open(response.data.data.CheckoutUrl, '_blank');
+        const paymentWindow = window.open(response.data.data.CheckoutUrl, '_blank');
         setisloading(true);
         interval = setInterval(CheckStatus, 5000);
+
+              // Listen for when the window is closed (payment cancelled)
+      const windowCheckInterval = setInterval(() => {
+        if (paymentWindow && paymentWindow.closed) {
+          clearInterval(windowCheckInterval);
+          clearInterval(interval);
+          setisloading(false);
+          // setTextShow(true);
+          // triggerAlert('Transaction Cancelled! Try Again.','error');
+          // setTextSev('error');
+        }
+      }, 500);
       }
       console.log(response);
+
     } catch (err) {
       onClose();
       console.log(err);
@@ -223,7 +246,8 @@ const NoDaysLeft = ({ onClose, open }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AlertCart open={textShow} text={text} sev={textsev} />
+      {textShow && 
+      <AlertCart open={textShow} text={text} sev={textsev} />}
     </>
   );
 };

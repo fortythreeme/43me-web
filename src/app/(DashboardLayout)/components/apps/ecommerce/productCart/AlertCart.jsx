@@ -5,7 +5,7 @@ import Snackbar from '@mui/material/Snackbar';
 const AlertCart = ({ text, open,sev }) => {
   const [isOpen, setIsOpen] = useState(false);
 // console.log(text,open,'oepn')
-console.log("first")
+// console.log("first")
   useEffect(() => {
     setIsOpen(open);
     if (open) {
